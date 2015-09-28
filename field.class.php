@@ -34,7 +34,7 @@ class data_field_tag extends data_field_text {
         $i++;
         $name = "df_tag_$i";
         return array(
-            " ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content",
+            " ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content1",
             ":$name", false).") ",
             array($name=>"%, $value,%")
         );
@@ -60,6 +60,31 @@ class data_field_tag extends data_field_text {
             return $str;
         }
         return false;
+    }
+
+    public function update_content($recordid, $value, $name='') {
+        global $DB;
+
+        $value = clean_param($value, PARAM_NOTAGS);
+
+        $searchablevalue = self::cleantext($value, false);
+
+        if (empty($searchablevalue)) {
+            return true;
+        }
+
+        $content = new stdClass();
+        $content->fieldid = $this->field->id;
+        $content->recordid = $recordid;
+        $content->content = $value;
+        $content->content1 = $searchablevalue;
+
+        if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+            $content->id = $oldcontent->id;
+            return $DB->update_record('data_content', $content);
+        } else {
+            return $DB->insert_record('data_content', $content);
+        }
     }
 
     public function name() {

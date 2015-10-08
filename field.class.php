@@ -33,11 +33,24 @@ class data_field_tag extends data_field_text {
         static $i=0;
         $i++;
         $name = "df_tag_$i";
-        return array(
-            " ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content1",
-            ":$name", false).") ",
-            array($name=>"%, $value,%")
-        );
+
+        $trimmedvalue = trim($value, '|');
+
+        if ($trimmedvalue != $value) {
+            return array(
+                " ({$tablealias}.fieldid = {$this->field->id} AND " . $DB->sql_like("{$tablealias}.content1",
+                    ":$name",
+                    false) . ") ",
+                array($name => "%, $trimmedvalue,%")
+            );
+        } else {
+            return array(
+                " ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content",
+                    ":$name",
+                    false).") "
+            , array($name=>"%$value%")
+            );
+        }
     }
 
     /**
@@ -112,7 +125,7 @@ class data_field_tag extends data_field_text {
 
             if ($display) {
                 $params =  array(
-                    "f_{$fieldid}" => $tag,
+                    "f_{$fieldid}" => '|' . $tag . '|',
                     'd' => $dataid,
                     'advanced' => 1
                 );

@@ -81,7 +81,7 @@ class migrateform extends moodleform {
 
         $sql = "
 SELECT df.id as fieldid, cc.name as categoryname, c.fullname as coursename, d.name as activityname, df.name as fieldname
-FROM {course c
+FROM {course} c
 INNER JOIN {course_categories} cc on cc.id = c.category
 INNER JOIN {course_modules} cm on c.id = cm.course
 INNER JOIN {modules} m on m.id = cm.module

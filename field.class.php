@@ -35,6 +35,7 @@ class data_field_tag extends data_field_text {
         $name = "df_tag_$i";
 
         $trimmedvalue = trim($value, '|');
+        $trimmedvalue = $DB->sql_like_escape($trimmedvalue);
 
         if ($trimmedvalue != $value) {
             return array(
@@ -141,6 +142,23 @@ class data_field_tag extends data_field_text {
             $str = ', ' . $str . ',';
         }
 
+        return $str;
+    }
+
+    /**
+     * Prints the respective type icon
+     *
+     * @global object
+     * @return string
+     */
+    function image() {
+        global $OUTPUT;
+
+        $params = array('d'=>$this->data->id, 'fid'=>$this->field->id, 'mode'=>'display', 'sesskey'=>sesskey());
+        $link = new moodle_url('/mod/data/field.php', $params);
+        $str = '<a href="'.$link->out().'">';
+        $str .= '<img src="'.$OUTPUT->pix_url('tag', 'datafield_tag') . '" ';
+        $str .= 'height="'.$this->iconheight.'" width="'.$this->iconwidth.'" alt="'.$this->type.'" title="'.$this->type.'" /></a>';
         return $str;
     }
 }

@@ -101,10 +101,6 @@ class data_field_tag extends data_field_text {
         }
     }
 
-    public function name() {
-        return get_string('name'.$this->type, 'datafield_'.$this->type);
-    }
-
     public static function cleantext($text, $display = false, $fieldid = null, $dataid = null) {
         $options = new stdClass();
         $options->filter=false;
@@ -157,8 +153,8 @@ class data_field_tag extends data_field_text {
         $params = array('d'=>$this->data->id, 'fid'=>$this->field->id, 'mode'=>'display', 'sesskey'=>sesskey());
         $link = new moodle_url('/mod/data/field.php', $params);
         $str = '<a href="'.$link->out().'">';
-        $str .= '<img src="'.$OUTPUT->pix_url('tag', 'datafield_tag') . '" ';
-        $str .= 'height="'.$this->iconheight.'" width="'.$this->iconwidth.'" alt="'.$this->type.'" title="'.$this->type.'" /></a>';
+        $str .= $OUTPUT->pix_icon('tag', 'tag', 'datafield_tag');
+        $str .= '</a>';
         return $str;
     }
 }

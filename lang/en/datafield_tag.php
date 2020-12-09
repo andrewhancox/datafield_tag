@@ -22,5 +22,5 @@
  */
 
 $string['pluginname'] = 'Tag input';
-$string['nametag'] = 'Tag';
+$string['fieldtypelabel'] = 'Tag field';
 $string['migrate'] = 'Migrate Text fields to Tags';

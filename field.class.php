@@ -110,7 +110,7 @@ class data_field_tag extends data_field_text {
         $elements = array();
 
         if ($display && (empty($fieldid) || empty($dataid))) {
-            print_error('When displaying content fieldid and dataid must be provided');
+            throw new \moodle_exception('When displaying content fieldid and dataid must be provided');
         }
 
         foreach ($tags as $tag) {
